@@ -13,7 +13,7 @@ class UserStoreRequest extends Request
         $form->set_rules('email', 'E-mail', 'required|max_length[50]');
         $form->set_rules('name', 'Name', 'required|max_length[50]');
         $form->set_rules('password', 'Password', 'required|min_length[6]|max_length[12]');
-        $form->set_rules('password_confirmation', 'Password Confirm', 'required|min_length[6]|max_length[12]');
+        $form->set_rules('password_confirmation', 'Password Confirm', 'required|min_length[6]|max_length[12]|matches[password]');
 
         if ($form->run() == FALSE) {
             $errors = $form->error_array();
