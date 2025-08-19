@@ -3,6 +3,7 @@
 namespace app\services;
 
 use app\helpers\DTOs\UserDTO;
+use Exception;
 use InvalidArgumentException;
 use User_model;
 
@@ -19,6 +20,10 @@ class UserService
     {
         $data = $user->toArray();
 
-        $result = $this->userModel->create($user);
+        $result = $this->userModel->create($data);
+
+        if(!$result){
+            throw new Exception('Failed to save user');
+        }
     }
 }
