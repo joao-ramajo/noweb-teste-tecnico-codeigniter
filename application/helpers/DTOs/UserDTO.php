@@ -5,6 +5,7 @@ namespace app\helpers\DTOs;
 use app\core\Request;
 use app\helpers\ValuesObjects\Email;
 use app\helpers\ValuesObjects\Password;
+use stdClass;
 
 class UserDTO
 {
@@ -19,12 +20,30 @@ class UserDTO
         $this->password = new Password($password);
     }
 
-    public static function fromRequest(Request $request)
+    public static function fromRequest(Request $request): self
     {
         return new self(
             $request->input('name'),
             $request->input('email'),
             $request->input('password'),
+        );
+    }
+
+    public static function fromArray(array $data): self
+    {
+        return new self(
+            $data['name'],
+            $data['email'],
+            $data['password']
+        );
+    }
+
+    public static function fromObject(stdClass $user): self
+    {
+        return new self(
+            $user->name,
+            $user->email,
+            $user->password,
         );
     }
 

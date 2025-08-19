@@ -1,4 +1,8 @@
 <?php
+
+use app\helpers\DTOs\UserDTO;
+use app\helpers\ValuesObjects\Email;
+
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class User_model extends CI_Model
@@ -17,6 +21,12 @@ class User_model extends CI_Model
     public function find($id)
     {
         return $this->db->get_where('users', ['id' => $id])->row();
+    }
+
+    public function findByEmail(Email $email): stdClass
+    {
+        $user = $this->db->get_where('users', ['email' => $email])->row();
+        return $user;
     }
 
     public function create($data)

@@ -10,7 +10,10 @@ class Password
 
     public function __construct(string $password)
     {
-        $this->validate($password);
+        if(strlen($password < 20))
+        {
+            // $this->validate($password);
+        }
         $this->password = $password;
     }
 
@@ -24,9 +27,9 @@ class Password
         return password_verify($this->password, $databasePassword);
     }
 
-    public function hash(): void
+    public function hash(): string
     {
-        $this->password = password_hash($this->password, PASSWORD_BCRYPT);
+        return password_hash($this->password, PASSWORD_BCRYPT);
     }
 
     private function validate(string $password): void
