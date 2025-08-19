@@ -55,3 +55,4 @@ $route['translate_uri_dashes'] = FALSE;
 
 $route['users']['GET'] = 'UserController/index';
 $route['users']['POST'] = 'UserController/store';
+
