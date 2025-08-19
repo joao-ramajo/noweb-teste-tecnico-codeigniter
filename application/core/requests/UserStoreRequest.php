@@ -3,6 +3,7 @@
 namespace app\core\requests;
 
 use app\core\Request;
+use app\helpers\Exceptions\ValidationException;
 use InvalidArgumentException;
 
 class UserStoreRequest extends Request
@@ -15,7 +16,8 @@ class UserStoreRequest extends Request
         $form->set_rules('password_confirmation', 'Password Confirm', 'required|min_length[6]|max_length[12]');
 
         if ($form->run() == FALSE) {
-            throw new InvalidArgumentException(validation_errors());
+            $errors = $form->error_array();
+            throw new ValidationException($errors);
         }
     }
 }
