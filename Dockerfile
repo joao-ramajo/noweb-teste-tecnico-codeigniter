@@ -4,8 +4,8 @@ WORKDIR /var/www/html
 
 RUN apk --no-cache add $PHPIZE_DEPS linux-headers && \
     pecl install xdebug && \
-    docker-php-ext-install pdo pdo_mysql && \
-    docker-php-ext-enable xdebug && \
+    docker-php-ext-install mysqli && \
+    docker-php-ext-enable mysqli xdebug && \
     apk --no-cache del $PHPIZE_DEPS
 
 # COPY ["composer.json", "composer.lock", "./"]

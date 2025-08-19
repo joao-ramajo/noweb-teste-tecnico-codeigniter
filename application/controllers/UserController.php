@@ -13,10 +13,15 @@ class UserController extends CI_Controller
     {
         parent::__construct();
         $this->load->library('form_validation');
+        $this->load->model('User_model');
     }
     public function index()
     {
-        echo "retornando lista de usuario";
+        $users = $this->User_model->all();
+
+        return Response::json([
+            'data' => $users
+        ]);
 
     }
 
