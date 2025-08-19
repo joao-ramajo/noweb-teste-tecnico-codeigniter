@@ -31,4 +31,9 @@ class Request
     {
         return $this->data[$key];
     }
+
+    public function method()
+    {
+        return $this->method;
+    }
 }
