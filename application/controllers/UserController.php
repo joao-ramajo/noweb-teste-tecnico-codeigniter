@@ -21,15 +21,6 @@ class UserController extends CI_Controller
 
         $this->userService = new UserService();
     }
-    public function index()
-    {
-        $users = $this->User_model->all();
-
-        return Response::json([
-            'data' => $users
-        ]);
-
-    }
 
     public function store()
     {

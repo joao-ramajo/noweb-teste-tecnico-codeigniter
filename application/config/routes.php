@@ -53,6 +53,5 @@ $route['default_controller'] = 'welcome';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
-$route['users']['GET'] = 'UserController/index';
 $route['users']['POST'] = 'UserController/store';
-
+$route['login']['POST'] = 'AuthController/login';
