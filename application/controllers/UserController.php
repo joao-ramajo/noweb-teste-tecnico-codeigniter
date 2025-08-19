@@ -39,9 +39,11 @@ class UserController extends CI_Controller
 
             $userDTO = UserDTO::fromRequest($request);
 
-            echo $userDTO->email;
-            die();
-            $user = $this->userService->save($userDTO);
+            $this->userService->save($userDTO);
+
+            return Response::json([
+                'message' => 'Account created successfully'
+            ], 201);
         }catch(ValidationException $e){
             return Response::json([
                 'message' => $e->getErrors()

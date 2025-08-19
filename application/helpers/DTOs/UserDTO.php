@@ -4,18 +4,19 @@ namespace app\helpers\DTOs;
 
 use app\core\Request;
 use app\helpers\ValuesObjects\Email;
+use app\helpers\ValuesObjects\Password;
 
 class UserDTO
 {
     public string $name;
-    public string $password;
+    public Password $password;
     public Email $email;
 
     public function __construct(string $name, string $email, string $password)
     {
         $this->name = $name;
         $this->email = new Email($email);
-        $this->password = $password;
+        $this->password = new Password($password);
     }
 
     public static function fromRequest(Request $request)
