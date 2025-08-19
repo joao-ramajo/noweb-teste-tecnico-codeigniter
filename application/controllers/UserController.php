@@ -48,6 +48,16 @@ class UserController extends CI_Controller
             return Response::json([
                 'message' => $e->getErrors()
             ], 422);
+        }catch(mysqli_sql_exception $e){
+                if ($e->getCode() === 1062) {
+                    return Response::json([
+                        'message' => 'This email is not available',
+                    ], 409);
+                }
+
+                return Response::json([
+                    'message' => 'Database error'
+                ], 500);
         }catch(Exception $e){
             return Response::json([
                 'message' => $e->getMessage()

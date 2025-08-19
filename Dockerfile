@@ -8,10 +8,10 @@ RUN apk --no-cache add $PHPIZE_DEPS linux-headers && \
     docker-php-ext-enable mysqli xdebug && \
     apk --no-cache del $PHPIZE_DEPS
 
-# COPY ["composer.json", "composer.lock", "./"]
+COPY ["composer.json", "composer.lock", "./"]
 
-# COPY --from=composer /usr/bin/composer /usr/bin/composer
-# RUN composer install --no-dev --no-interaction
+COPY --from=composer /usr/bin/composer /usr/bin/composer
+RUN composer install --no-dev --no-interaction
 
 COPY . ./
 
