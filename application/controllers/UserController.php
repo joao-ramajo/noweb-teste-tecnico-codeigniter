@@ -1,6 +1,5 @@
 <?php
 
-use app\core\Request;
 use app\core\requests\UserStoreRequest;
 use app\core\Response;
 use app\helpers\DTOs\UserDTO;

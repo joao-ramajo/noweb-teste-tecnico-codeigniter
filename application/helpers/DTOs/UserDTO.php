@@ -3,6 +3,7 @@
 namespace app\helpers\DTOs;
 
 use app\core\Request;
+use app\core\requests\auth\LoginRequest;
 use app\helpers\ValuesObjects\Email;
 use app\helpers\ValuesObjects\Password;
 use stdClass;
@@ -26,6 +27,15 @@ class UserDTO
             $request->input('name'),
             $request->input('email'),
             $request->input('password'),
+        );
+    }
+
+    public static function fromLogin(LoginRequest $request): self
+    {
+        return new self(
+            '',
+            $request->input('email'),
+            $request->input('password')
         );
     }
 

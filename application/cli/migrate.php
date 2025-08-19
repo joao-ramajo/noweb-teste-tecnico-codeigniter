@@ -8,8 +8,10 @@ try{
     $conn = new mysqli($_ENV['DB_HOST'], $_ENV['DB_USERNAME'], $_ENV['DB_PASSWORD'], $_ENV['DB_DATABASE']);
 
     $users_table = file_get_contents(dirname(__DIR__, 1) . '/database/tables/users.sql');
+    $articles_table = file_get_contents(dirname(__DIR__, 1) . '/database/tables/articles.sql');
 
     $conn->query($users_table);
+    $conn->query($articles_table);
 
     echo "Tabela users criada com sucesso.";
 

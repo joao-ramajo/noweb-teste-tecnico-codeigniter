@@ -54,4 +54,5 @@ $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
 $route['users']['POST'] = 'UserController/store';
+
 $route['login']['POST'] = 'AuthController/login';
