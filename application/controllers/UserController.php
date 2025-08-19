@@ -39,7 +39,8 @@ class UserController extends CI_Controller
 
             $userDTO = UserDTO::fromRequest($request);
 
-
+            echo $userDTO->email;
+            die();
             $user = $this->userService->save($userDTO);
         }catch(ValidationException $e){
             return Response::json([
