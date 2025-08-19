@@ -11,5 +11,23 @@ services:
     networks:
       - app
 
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+     MYSQL_ROOT_PASSWORD: root
+     MYSQL_DATABASE: ${DB_DATABASE}
+     MYSQL_USER: ${DB_USERNAME}
+     MYSQL_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - "db_data:/var/lib/mysql"
+    networks:
+      - app
+
+volumes:
+  db_data:
+
 networks:
   app:
