@@ -36,6 +36,8 @@ class ArticleController extends CI_Controller
     public function index(): Response
     {
         try{
+            AuthMiddleware::Handle();
+
             $request = new Request();
 
             if($request->param('id')){
