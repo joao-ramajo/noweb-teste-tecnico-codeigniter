@@ -53,7 +53,7 @@ class ArticleController extends CI_Controller
         }catch(Exception $e){
             return Response::json([
                 'message' => $e->getMessage(),
-                'data'
+                'data' => []
             ]);
         }
     }
