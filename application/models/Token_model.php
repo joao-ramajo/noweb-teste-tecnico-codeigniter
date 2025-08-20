@@ -22,6 +22,20 @@ class Token_model extends CI_Model
         return $this->db->get_where(self::TABLE, ['id' => $id])->row();
     }
 
+    public function findByUserEmail($email)
+    {
+        $this->db->select('access_tokens.user_id, access_tokens.token, access_tokens.expiration');
+        $this->db->from('users');
+        $this->db->join('access_tokens', 'access_tokens.user_id = users.id');
+        $this->db->where('users.email', $email);
+        $this->db->where('access_tokens.expiration >=', date('Y-m-d h:i:s'));
+
+        $query = $this->db->get();
+        $result = $query->row();
+
+        return $result;
+    }
+
     public function create($data)
     {
         return $this->db->insert(self::TABLE, $data);

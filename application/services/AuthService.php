@@ -26,7 +26,7 @@ class AuthService
         try{
             $registredUser = $this->userModel->findByEmail($user->email);
         }catch(InvalidArgumentException){
-            throw new InvalidArgumentException('Invalid login');
+            throw new InvalidArgumentException('Email or password invalid');
         }
 
         $hash = $registredUser->password;
@@ -35,6 +35,18 @@ class AuthService
 
         if (!$result) {
             throw new InvalidArgumentException('Email or password invalid');
+        }
+
+        $tokenHasExists = $this->tokenModel->findByUserEmail($registredUser->email);
+
+        if($tokenHasExists){
+            $token = [
+                'user_id' => $tokenHasExists->user_id,
+                'token' => $tokenHasExists->token,
+                'expiration' => $tokenHasExists->expiration
+            ];
+
+            return $token;
         }
 
         $tokenText = bin2hex(random_bytes(64));
