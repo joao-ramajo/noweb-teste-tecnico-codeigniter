@@ -10,9 +10,9 @@ class Password
 
     public function __construct(string $password)
     {
-        if(strlen($password < 20))
+        if(strlen($password) <= 20)
         {
-            // $this->validate($password);
+            $this->validate($password);
         }
         $this->password = $password;
     }

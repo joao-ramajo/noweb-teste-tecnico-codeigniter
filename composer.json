@@ -17,7 +17,7 @@
     },
     "scripts": {
         "migrate-up": "@php application/cli/migrate.php",
-        "test": "./vendor/bin/pest --coverage"
+        "test": "./vendor/bin/pest"
     },
     "config": {
         "allow-plugins": {
