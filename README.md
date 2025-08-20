@@ -6,19 +6,20 @@ O projeto conta com um CRUD completo para notícias nomeadas `articles` e o cada
 
 Desenvolvido utilizando o framework **Code Igniter 3**
 
+- Autenticação com Tokens personalizados
+- Validação de entrada e sanitização de dados
+- DTOs e objetos de valores para garantir integridade dos dados
+
 # Sumário
 
 - [Tecnologias](#tecnologias)
 - [Instalação](#instalação)
-  - [Clone do Repositório](#clone-o-repositório)
-  - [Instalação de Dependências](#instale-as-dependências-e-gere-a-chave-de-acesso-do-laravel)
-  - [Configuração do Banco de Dados](#configure-o-acesso-ao-banco-de-dados-em-env)
-  - [Subindo o Docker](#suba-o-docker-compose)
-  - [Rode as Migrations](#rode-as-migrations)
-  - [Iniciando o Servidor](#inicie-o-servidor-do-projeto)
+  - [Ambiente Linux](#caso-use-linux)
+  - [Outros Ambientes](#caso-use-outro-sistema)
 - [Fluxo do Usuário](#fluxo-do-usuário)
   - [Cadastro](#cadastro)
   - [Login](#login)
+  - [Logout](#logout)
 - [Fluxo das Notícias](#fluxo-das-notícias)
   - [Buscar Notícias](#buscar-notícias)
   - [Busca Única](#busca-única)
@@ -26,11 +27,8 @@ Desenvolvido utilizando o framework **Code Igniter 3**
   - [Atualizar Notícias](#atualizar-notícias)
   - [Apagar Notícia](#apagar-notícia)
 - [Tabela de Rotas](#tabela-de-rotas)
-- [Testes](#testes)
-  - [Como Rodar](#como-rodar-os-testes)
-  - [O que será Testado](#o-que-será-testado)
 - [Autenticação](#autenticação)
-- [Autorização](#autorização)
+
 
 
 ## Tecnologias
