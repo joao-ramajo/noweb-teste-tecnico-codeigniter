@@ -22,7 +22,7 @@ class Password
         return $this->password;
     }
 
-    public function compare($databasePassword): bool
+    public function compare(string $databasePassword): bool
     {
         return password_verify($this->password, $databasePassword);
     }
