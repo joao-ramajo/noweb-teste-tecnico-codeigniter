@@ -18,7 +18,17 @@ class AuthService
     }
     public function verify(UserDTO $user)
     {
-        // $registedUser = 
-        echo "Logando";
+        $registredUser = $this->userModel->findByEmail($user->email);
+
+        // print_r($registredUser);
+
+        echo $registredUser->password;
+        echo PHP_EOL . $user->password;
+
+        if ($registredUser && $user->password->compare($registredUser->password)) {
+            echo "Passwords match";
+        } else {
+            echo "Passwords do not match";
+        }
     }
 }
