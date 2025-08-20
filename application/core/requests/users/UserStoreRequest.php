@@ -1,6 +1,7 @@
 <?php
 
-namespace app\core\requests;
+namespace app\core\requests\users;
+
 
 use app\core\Request;
 use app\helpers\Exceptions\ValidationException;

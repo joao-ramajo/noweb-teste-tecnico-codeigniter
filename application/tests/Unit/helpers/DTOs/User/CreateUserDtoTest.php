@@ -2,7 +2,7 @@
 
 use app\core\Request;
 use app\core\requests\auth\LoginRequest;
-use app\core\requests\UserStoreRequest;
+use app\core\requests\users\UserStoreRequest;
 use app\helpers\DTOs\UserDTO;
 use app\helpers\ValuesObjects\Email;
 use app\helpers\ValuesObjects\Password;

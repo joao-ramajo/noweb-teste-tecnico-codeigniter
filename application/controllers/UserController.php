@@ -1,6 +1,6 @@
 <?php
 
-use app\core\requests\UserStoreRequest;
+use app\core\requests\users\UserStoreRequest;
 use app\core\Response;
 use app\helpers\DTOs\UserDTO;
 use app\helpers\Exceptions\ValidationException;
