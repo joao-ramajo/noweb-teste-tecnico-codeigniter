@@ -16,6 +16,12 @@
         "vlucas/phpdotenv": "^5.6"
     },
     "scripts": {
+        "project:init" : [
+            "cp .env.example .env",
+            "composer install",
+            "docker compose up -d --build",
+            "echo Inicialização Concluida"
+        ],
         "db:reset": "docker exec -it noweb-teste-tecnico-codeigniter-app-1 php application/cli/migrate.php",
         "test": "./vendor/bin/pest"
     },
