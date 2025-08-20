@@ -36,6 +36,8 @@ class AuthService
 
     public function logout($token)
     {
-        echo 'realizando logout do token: ' . $token;
+        // apaga token
+        
+        // retorno
     }
 }

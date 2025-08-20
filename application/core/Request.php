@@ -2,6 +2,9 @@
 
 namespace app\core;
 
+use app\helpers\Exceptions\InvalidTokenException;
+use app\helpers\ValuesObjects\Token;
+
 class Request
 {
     protected $data;
@@ -37,10 +40,16 @@ class Request
         return $this->method;
     }
 
-    public function getToken()
+    public function getToken(): Token
     {
         $headers = getallheaders();
-        $token = explode(' ', $headers['Authorization']) ?? null;
+        $content = explode(' ', $headers['Authorization']) ?? null;
+
+        if(!$content){
+            throw new InvalidTokenException('Invalid header');
+        }
+
+        $token = new Token($content);
 
         return $token;
     }

@@ -57,7 +57,7 @@ class AuthController extends CI_Controller
         $request = new Request();
         $token = $request->getToken();
 
-        $this->authService->logout($token[1]);
+        $this->authService->logout($token);
 
         echo "realizando logout";
     }
