@@ -1,5 +1,6 @@
 <?php
 
+use app\core\Request;
 use app\core\requests\auth\LoginRequest;
 use app\core\Response;
 use app\helpers\DTOs\UserDTO;
@@ -53,6 +54,10 @@ class AuthController extends CI_Controller
     public function logout()
     {
         AuthMiddleware::handle();
+        $request = new Request();
+        $token = $request->getToken();
+
+        $this->authService->logout($token[1]);
 
         echo "realizando logout";
     }

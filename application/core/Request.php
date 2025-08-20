@@ -36,4 +36,12 @@ class Request
     {
         return $this->method;
     }
+
+    public function getToken()
+    {
+        $headers = getallheaders();
+        $token = explode(' ', $headers['Authorization']) ?? null;
+
+        return $token;
+    }
 }
