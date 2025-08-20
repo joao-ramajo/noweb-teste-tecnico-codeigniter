@@ -29,7 +29,8 @@ class Password
 
     public function hash(): string
     {
-        return password_hash($this->password, PASSWORD_BCRYPT);
+        $pass = $this->password;
+        return password_hash($pass, PASSWORD_BCRYPT);
     }
 
     private function validate(string $password): void

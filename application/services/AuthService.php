@@ -4,6 +4,8 @@ namespace app\services;
 
 use app\helpers\DTOs\UserDTO;
 use Article_model;
+use DateTimeImmutable;
+use InvalidArgumentException;
 use User_model;
 
 class AuthService
@@ -18,18 +20,29 @@ class AuthService
     }
     public function verify(UserDTO $user)
     {
-        $registredUser = $this->userModel->findByEmail($user->email);
-
-        // print_r($registredUser);
-
-        echo $registredUser->password;
-        echo PHP_EOL . $user->password;
-
-        if ($registredUser && $user->password->compare($registredUser->password)) {
-            echo "Passwords match";
-        } else {
-            echo "Passwords do not match";
+        try{
+            $registredUser = $this->userModel->findByEmail($user->email);
+        }catch(InvalidArgumentException){
+            throw new InvalidArgumentException('Invalid login');
         }
+
+        $hash = $registredUser->password;
+
+        $result = $user->password->compare($hash);
+
+        if (!$result) {
+            throw new InvalidArgumentException('Email or password invalid');
+        }
+
+        $token = bin2hex(random_bytes(64));
+        $expiration = new DateTimeImmutable('+1 hour');
+
+        $payload = [
+            'token' => $token,
+            'expiration' => $expiration
+        ];
+
+        print_r($payload);
         die();
     }
 }

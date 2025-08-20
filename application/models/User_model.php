@@ -23,9 +23,14 @@ class User_model extends CI_Model
         return $this->db->get_where('users', ['id' => $id])->row();
     }
 
-    public function findByEmail(Email $email): stdClass
+    public function findByEmail(Email $email): ?stdClass
     {
         $user = $this->db->get_where('users', ['email' => $email])->row();
+
+        if(!$user){
+            throw new InvalidArgumentException('User not found');
+        }
+
         return $user;
     }
 
