@@ -17,4 +17,9 @@ class Token
     {
         return $this->token;
     }
+
+    public function getType(): string
+    {
+        return $this->type;
+    }
 }

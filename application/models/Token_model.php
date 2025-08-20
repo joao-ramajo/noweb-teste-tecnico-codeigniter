@@ -1,5 +1,7 @@
 <?php
 
+use app\helpers\ValuesObjects\Token;
+
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Token_model extends CI_Model
@@ -61,5 +63,10 @@ class Token_model extends CI_Model
     public function delete($id)
     {
         return $this->db->delete(self::TABLE, ['id' => $id]);
+    }
+
+    public function deleteByToken(Token $token)
+    {
+        return $this->db->delete(self::TABLE, ['token' => $token]);
     }
 }

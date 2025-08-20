@@ -2,7 +2,10 @@
 
 namespace app\services;
 
+use app\core\Response;
 use app\helpers\DTOs\UserDTO;
+use app\helpers\Exceptions\InvalidTokenException;
+use app\helpers\ValuesObjects\Token;
 use Article_model;
 use InvalidArgumentException;
 use Token_model;
@@ -34,10 +37,10 @@ class AuthService
         return $token;
     }
 
-    public function logout($token)
+    public function logout(Token $token)
     {
-        // apaga token
-        
-        // retorno
+
+        $this->tokenService->revoke($token);
+
     }
 }

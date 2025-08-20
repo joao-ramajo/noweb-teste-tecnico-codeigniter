@@ -2,6 +2,7 @@
 
 namespace app\middlewares;
 
+use app\core\Request;
 use app\core\Response;
 use app\helpers\Exceptions\InvalidTokenException;
 use app\services\TokenService;
@@ -12,16 +13,16 @@ class AuthMiddleware
     public static function Handle()
     {
         try{
-            $headers = getallheaders();
-            $tokenService = new TokenService();
+            $request = new Request();
+            $token = $request->getToken();
 
-            $token = $headers['Authorization'] ?? null;
+            $tokenService = new TokenService();
 
             $tokenService->validateToken($token);
         }catch(InvalidTokenException $e){
             return Response::json([
                 'message' => $e->getMessage()
-            ], 401);
+            ], 403);
         }catch(Exception $e){
             return Response::json([
                 'message' => $e->getMessage()

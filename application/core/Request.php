@@ -4,6 +4,7 @@ namespace app\core;
 
 use app\helpers\Exceptions\InvalidTokenException;
 use app\helpers\ValuesObjects\Token;
+use InvalidArgumentException;
 
 class Request
 {
@@ -40,10 +41,16 @@ class Request
         return $this->method;
     }
 
-    public function getToken(): Token
+    public function getToken()
     {
         $headers = getallheaders();
+
+        if(!isset($headers['Authorization'])){
+            throw new InvalidTokenException('Unauthorized.');
+        }
+
         $content = explode(' ', $headers['Authorization']) ?? null;
+
 
         if(!$content){
             throw new InvalidTokenException('Invalid header');

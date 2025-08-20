@@ -4,6 +4,7 @@ use app\core\Request;
 use app\core\requests\auth\LoginRequest;
 use app\core\Response;
 use app\helpers\DTOs\UserDTO;
+use app\helpers\Exceptions\InvalidTokenException;
 use app\helpers\Exceptions\ValidationException;
 use app\middlewares\AuthMiddleware;
 use app\services\AuthService;
@@ -53,12 +54,24 @@ class AuthController extends CI_Controller
 
     public function logout()
     {
-        AuthMiddleware::handle();
-        $request = new Request();
-        $token = $request->getToken();
+        try{
+            AuthMiddleware::handle();
+            $request = new Request();
+            $token = $request->getToken();
 
-        $this->authService->logout($token);
+            $this->authService->logout($token);
 
-        echo "realizando logout";
+            return Response::json([
+                'message' => 'Logout successfully'
+            ], 204);
+        }catch(InvalidTokenException $e){
+            return Response::json([
+                'message' => $e->getMessage()
+            ], 403);
+        }catch(Exception $e){
+            return Response::json([
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
 }
