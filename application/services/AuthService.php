@@ -30,5 +30,6 @@ class AuthService
         } else {
             echo "Passwords do not match";
         }
+        die();
     }
 }

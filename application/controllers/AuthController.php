@@ -30,6 +30,7 @@ class AuthController extends CI_Controller
 
             $userDTO = UserDTO::fromLogin($request);
 
+            die('teste');
             $this->authService->verify($userDTO);
 
         }catch(ValidationException $e){
