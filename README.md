@@ -30,6 +30,17 @@ Desenvolvido utilizando o framework **Code Igniter 3**
 - [Autenticação](#autenticação)
 
 
+## Testes
+
+Devido ao tempo disponível para este projeto, foram criados apenas **testes de unidade** focados nas partes de movimentação de dados entre as camadas, como os **DTOs** e os **Value Objects**.
+
+Para rodar os testes, após a instalação do projeto, utilize um dos comandos abaixo:
+
+```bash
+composer test      # usando o script do Composer
+# ou
+./vendor/bin/pest   # usando o comando do próprio Pest
+```
 
 ## Tecnologias
 
