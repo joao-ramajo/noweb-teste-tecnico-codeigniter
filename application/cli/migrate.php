@@ -9,9 +9,11 @@ try{
 
     $users_table = file_get_contents(dirname(__DIR__, 1) . '/database/tables/users.sql');
     $articles_table = file_get_contents(dirname(__DIR__, 1) . '/database/tables/articles.sql');
+    $tokens_table = file_get_contents(dirname(__DIR__, 1) . '/database/tables/access_tokens.sql');
 
     $conn->query($users_table);
     $conn->query($articles_table);
+    $conn->query($tokens_table);
 
     echo "Tabela users criada com sucesso.";
 
