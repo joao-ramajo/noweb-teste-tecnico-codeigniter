@@ -24,6 +24,11 @@ class Article_model extends CI_Model
         return $this->db->get_where(self::TABLE, ['id' => $id])->row();
     }
 
+    public function findByTitle(string $title)
+    {
+        return $this->db->get_where(self::TABLE, ['title' => $title])->row();
+    }
+
     public function create(ArticleDTO $articleDTO)
     {
         $data = $articleDTO->toArray();

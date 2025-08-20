@@ -41,7 +41,7 @@ class ArticleController extends CI_Controller
 
             $articleDTO = ArticleDTO::fromRequest($request);
 
-            $user = $this->userService->findUserByTokn($token);
+            $user = $this->userService->findUserByToken($token);
 
             $articleDTO->user_id = $user->id;
 
@@ -50,15 +50,27 @@ class ArticleController extends CI_Controller
             return Response::json([
                 'message' => 'Article created successfully',
                 'data' => $article
-            ]);
+            ], 201);
         }catch(ValidationException $e){
             return Response::json([
-                'message' => $e->getErrors()
+                'message' => $e->getErrors(),
+                'data' => null
             ], 422);
         }catch(EntityNotFound $e){
             return Response::json([
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
+                'data' => null
             ], 404);
+        }catch(DomainException $e){
+            return Response::json([
+                'message' => $e->getMessage(),
+                'data' => null
+            ], 422);
+        }catch(Exception $e){
+            return Response::json([
+                'message' => $e->getMessage(),
+                'data' => null
+            ], 500);
         }
     }
 }

@@ -5,6 +5,7 @@ namespace app\services;
 use app\helpers\DTOs\ArticleDTO;
 use app\helpers\Exceptions\EntityNotFound;
 use Article_model;
+use DomainException;
 
 class ArticleService
 {
@@ -18,7 +19,14 @@ class ArticleService
     public function save(ArticleDTO $articleDTO)
     {
 
+        $titleArticle = $this->articleModel->findByTitle($articleDTO->title);
+
+        if($titleArticle){
+            throw new DomainException('Title already exists');
+        }
+
         $article = $this->articleModel->create($articleDTO);
+
 
         if(!$article){
             throw new EntityNotFound('No records found.');

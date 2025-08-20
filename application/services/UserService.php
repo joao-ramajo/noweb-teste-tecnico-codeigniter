@@ -38,7 +38,7 @@ class UserService
         return $created;
     }
 
-    public function findUserByTokn(Token $token)
+    public function findUserByToken(Token $token)
     {
         $user = $this->userModel->findByToken($token);
 
