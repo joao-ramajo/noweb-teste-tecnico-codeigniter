@@ -29,7 +29,7 @@ class Request
 
     public function input($key)
     {
-        return $this->data[$key];
+        return htmlspecialchars($this->data[$key], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
     }
 
     public function method()
