@@ -205,14 +205,14 @@ A requisição se bem sucedida irá retornar um payload como este.
 ]
 ```
 
-<!-- ### Busca Única
+### Busca Única
 
 Para buscar uma notícia apenas, basta informar o ID na requisição.
 
 Exemplo de requisição.
 
 ```bash
-GET /articles/1
+GET /articles?id=1
 ```
 
 Headers obrigatórios.
@@ -227,15 +227,14 @@ O payload devolvido caso exista o registro.
 ```json
 {
     "data": {
-        "id": 1,
-        "title": "Notícia do Dia",
-        "content": "Contéudo da notícia",
-        "author": "Alex Adams",
-        "created_at": "2025-08-19T17:13:14.000000Z",
-        "updated_at": "2025-08-19T17:13:14.000000Z"
+        "id": "2",
+        "user_id": "4",
+        "title": "<titulo da noticia>",
+        "content": "<conteudo da noticia",
+        "created_at": "2025-08-20 18:14:19"
     }
 }
-``` -->
+```
 
 ### Criar notícia
 
