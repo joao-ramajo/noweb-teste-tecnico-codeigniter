@@ -14,9 +14,23 @@ class Article_model extends CI_Model
         $this->load->database();
     }
 
-    public function all()
+    public function all(array $condition)
     {
-        return $this->db->get(self::TABLE)->result();
+        // return $this->db->get(self::TABLE)->result();
+        $this->db->select('*');
+        $this->db->from('articles');
+        $this->db->order_by('created_at', 'DESC'); // opcional
+        $this->db->limit($condition['perPage'], $condition['offset']);
+
+        $query = $this->db->get();
+        $paginate = $query->result();
+
+        $total_pages = $total = $this->db->count_all_results('articles');
+
+        return [
+            'total_pages' => $total_pages,
+            'data' => $paginate
+        ];
     }
 
     public function find($id)

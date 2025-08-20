@@ -1,5 +1,6 @@
 <?php
 
+use app\core\Request;
 use app\core\requests\articles\ArticleStoreRequest;
 use app\core\Response;
 use app\helpers\DTOs\ArticleDTO;
@@ -27,6 +28,34 @@ class ArticleController extends CI_Controller
 
         $this->articleService = new ArticleService();
         $this->userService = new UserService();
+    }
+
+    public function index()
+    {
+        try{
+            $request = new Request();
+
+            $page = $request->param('page') ?? 1;
+            $perPage = 5;
+            $offset = ($page - 1) * $perPage;
+
+            $condition = [
+                'page' => $page,
+                'perPage' => $perPage,
+                'offset' => $offset
+            ];
+
+            $payload = $this->articleService->all($condition);
+
+            return Response::json([
+                $payload
+            ], 200);
+        }catch(Exception $e){
+            return Response::json([
+                'message' => $e->getMessage(),
+                'data'
+            ]);
+        }
     }
 
     public function store()

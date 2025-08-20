@@ -59,3 +59,4 @@ $route['login']['POST'] = 'AuthController/login';
 $route['logout']['POST'] = 'AuthController/logout';
 
 $route['articles']['POST'] = 'ArticleController/store';
+$route['articles']['GET'] = 'ArticleController/index';

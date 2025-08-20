@@ -16,6 +16,19 @@ class ArticleService
         $this->articleModel = new Article_model();
     }
 
+    public function all(array $condition)
+    {
+        $articles = $this->articleModel->all($condition);
+
+        $payload = [
+            'page' => $condition['page'],
+            'total_pages' => ceil($articles['total_pages'] / $condition['perPage']),
+            'total' => $articles['total_pages'],
+            'data' => $articles['data']
+        ];
+
+        return $payload;
+    }
     public function save(ArticleDTO $articleDTO)
     {
 

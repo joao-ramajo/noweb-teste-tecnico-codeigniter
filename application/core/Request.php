@@ -8,9 +8,9 @@ use InvalidArgumentException;
 
 class Request
 {
-    protected $data;
-    protected $params;
-    protected $method;
+    protected array $data;
+    protected array $params;
+    protected string $method;
 
     public function __construct($method = null, $data = null, $params = null)
     {
@@ -40,6 +40,14 @@ class Request
         return htmlspecialchars($this->data[$key], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
     }
 
+    public function param(?string $key): ?string
+    {
+        if (!isset($this->params[$key])) {
+            return null;
+        }
+
+        return htmlspecialchars($this->params[$key], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+    }
 
     public function method()
     {
