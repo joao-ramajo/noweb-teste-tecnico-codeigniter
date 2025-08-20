@@ -4,6 +4,7 @@ use app\core\requests\auth\LoginRequest;
 use app\core\Response;
 use app\helpers\DTOs\UserDTO;
 use app\helpers\Exceptions\ValidationException;
+use app\middlewares\AuthMiddleware;
 use app\services\AuthService;
 
 defined('BASEPATH') OR exit('No direct script access allowed');
@@ -47,5 +48,12 @@ class AuthController extends CI_Controller
                 'message' => $e->getMessage()
             ], 500);
         }
+    }
+
+    public function logout()
+    {
+        AuthMiddleware::handle();
+
+        echo "realizando logout";
     }
 }

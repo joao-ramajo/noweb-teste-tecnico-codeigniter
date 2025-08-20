@@ -3,6 +3,7 @@
 namespace app\services;
 
 use app\helpers\DTOs\UserDTO;
+use app\helpers\Exceptions\InvalidTokenException;
 use app\helpers\ValuesObjects\Email;
 use Article_model;
 use DateTimeImmutable;
@@ -23,7 +24,6 @@ class TokenService
         $this->tokenModel = new Token_model();
     }
 
-    public function validateToken(){}
     public function generateToken(Email $userEmail, string $id)
     {
         // verifica se existe
@@ -54,5 +54,21 @@ class TokenService
         // retorna o payload
         return $token;
     }
+
+    public function validateToken(string $token): void
+    {
+        $content = explode(' ', $token);
+
+        if(count($content) < 2 || $content[0] !== 'Bearer'){
+            throw new InvalidTokenException('This token type is not accepted');
+        }
+
+        $registedToken = $this->tokenModel->findByToken($content[1]);
+
+        if(!$registedToken){
+            throw new InvalidTokenException('Unauthorized');
+        }
+    }
+
     public function revokeToken(){}
 }

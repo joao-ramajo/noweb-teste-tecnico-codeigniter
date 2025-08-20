@@ -36,6 +36,18 @@ class Token_model extends CI_Model
         return $result;
     }
 
+    public function findByToken($token){
+        $this->db->select('token');
+        $this->db->from('access_tokens');
+        $this->db->where('token', $token);
+        $this->db->where('expiration >=', date('Y-m-d h:i:s'));
+
+        $query = $this->db->get();
+        $result = $query->row();
+
+        return $result;
+    }
+
     public function create($data)
     {
         return $this->db->insert(self::TABLE, $data);
