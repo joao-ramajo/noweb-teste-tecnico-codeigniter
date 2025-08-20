@@ -54,7 +54,7 @@ class Request
         return $this->method;
     }
 
-    public function getToken(): string
+    public function getToken(): Token
     {
         $headers = getallheaders();
 
@@ -69,8 +69,6 @@ class Request
             throw new InvalidTokenException('Invalid header');
         }
 
-        $token = new Token($content);
-
-        return $token;
+        return new Token($content);
     }
 }
