@@ -43,7 +43,7 @@ class UserService
         $user = $this->userModel->findByToken($token);
 
         if(!$user){
-            throw new EntityNotFound('No records found');
+            throw new EntityNotFound('Invalid user token');
         }
 
         return $user;

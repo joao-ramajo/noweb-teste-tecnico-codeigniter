@@ -10,6 +10,7 @@ use app\helpers\Exceptions\ValidationException;
 use Article_model;
 use Dom\Entity;
 use DomainException;
+use InvalidArgumentException;
 
 class ArticleService
 {
@@ -21,7 +22,16 @@ class ArticleService
     }
 
     public function findById($id){
-        return $this->articleModel->find($id);
+        if((int) $id <= 0){
+            throw new InvalidArgumentException('This ID is invalid');
+        }
+        $article = $this->articleModel->find($id);
+
+        if(!$article){
+            throw new EntityNotFound('Article not found.');
+        }
+
+        return $article;
     }
 
     public function all(array $condition)
@@ -47,7 +57,6 @@ class ArticleService
         }
 
         $article = $this->articleModel->create($articleDTO);
-
 
         if(!$article){
             throw new EntityNotFound('No records found.');

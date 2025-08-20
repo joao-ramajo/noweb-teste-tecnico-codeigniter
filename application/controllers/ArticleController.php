@@ -38,10 +38,17 @@ class ArticleController extends CI_Controller
         try{
             $request = new Request();
 
-            if($request->input('method') === 'PUT'){
-                $this->update();
-            }
+            if($request->param('id')){
+                $id = (int) $request->param('id');
 
+                $article = $this->articleService->findById($id);
+
+                return Response::json([
+                    'data' => $article
+                ]);
+
+            }
+            die();
             $page = $request->param('page') ?? 1;
             $perPage = 5;
             $offset = ($page - 1) * $perPage;
@@ -57,6 +64,16 @@ class ArticleController extends CI_Controller
             return Response::json([
                 $payload
             ], 200);
+        }catch(InvalidArgumentException $e){
+            return Response::json([
+                'message' => $e->getMessage(),
+                'data' => null
+            ]);
+        }catch(EntityNotFound $e) {
+            return Response::json([
+                'message' => $e->getMessage(),
+                'data' => []
+            ]);
         }catch(Exception $e){
             return Response::json([
                 'message' => $e->getMessage(),
@@ -87,12 +104,13 @@ class ArticleController extends CI_Controller
 
             $request = new ArticleStoreRequest();
             $request->validate($this->form_validation);
-
+            
             $token = $request->getToken();
-
+            
             $articleDTO = ArticleDTO::fromRequest($request);
-
+            
             $user = $this->userService->findUserByToken($token);
+
 
             $articleDTO->user_id = $user->id;
 

@@ -49,6 +49,30 @@ Para rodar este projeto você precisa das seguintes dependências:
 - Docker ^28.3.3
 - Composer ^2.8.10
 
+
+## Caso use linux
+
+Em ambientes linux, o arquivo de inicialização é suportado basta rodar o comando:
+
+```bash
+composer project:init
+```
+
+Com isso ele irá automaticamente:
+
+- Copiar arquivo de configurações de ambiente
+- Instalar as dependências necessárias
+- Montar o container
+- Rodar o projeto
+
+Após isso ele estará disponível em.
+```http
+http://localhost:8080
+```
+---
+
+## Caso use outro sistema
+
 ### Clone o repositório
 
 ```bash
@@ -56,55 +80,35 @@ git clone https://github.com/joao-ramajo/noweb-teste-tecnico-codeigniter
 cd noweb-teste-tecnico-codeigniter
 ```
 
-### Instale as dependências e gere a chave de acesso do Laravel
+### Configure o arquivo de variáveis de ambiente
 
 ```bash
-composer install 
-cp .env.example .env # copie as variavéis de ambiente
-php artisan key:generate 
+cp .env.example .env
 ```
 
-### Configure o acesso ao banco de dados em .env
-
-```txt
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=api-noweb
-DB_USERNAME=user
-DB_PASSWORD=123456
-```
-
-### Suba o docker-compose 
+### Instale as dependências do Composer
 
 ```bash
-docker compose up -d
+composer install
 ```
 
-### Rode as migrations
-```
-php artisan migrate
-# ou rode com o seeder
-php artisan migrate --seed
-```
-O seeder está configurado para gerar 20 notícias e um usuário com os acessos.
+### Monte e rode o container com Docker
 
-Email: admin@gmail.com
-<br>
-Senha: Aa123123
-
-### Inicie o servidor do projeto
-
-```
-php artisan serve
+```bash
+docker compose up -d --build
 ```
 
-Após isso a aplicação estará rodando em `http://localhost:8000/api`
+Após isso ele estará disponível em.
+```http
+http://localhost:8080
+```
+
+
 ## Fluxo do Usuário
 
 ### Cadastro
 
-O usuário envia uma requisição `POST /users` para cadastrar suas informações e gerar um token de acesso.
+O usuário envia uma requisição `POST /users` para cadastrar suas informações.
 
 Payload de cadastro.
 
@@ -117,19 +121,16 @@ Payload de cadastro.
 }
 ```
 
-Após isso a requisição passa por uma validação utilizando a classe `UserStoreRequest.php` para fazer a validação de entrada de dados e garantir que todas as informações sejam enviadas corretamente.
-
 Após isso, será retornado o payload contendo as informações do usuário e o ID registrado.
 
 ```json
 {
-    "message": "Usuário criado com sucesso",
+    "message": "Account created successfully",
     "data": {
-        "name": "joao",
-        "email": "joao@gmail.comd",
-        "updated_at": "2025-08-19T16:45:44.000000Z",
-        "created_at": "2025-08-19T16:45:44.000000Z",
-        "id": 2
+        "id": "4",
+        "name": "john",
+        "email": "john@gmail.com",
+        "created_at": "2025-08-20 17:46:49"
     }
 }
 ```
@@ -137,30 +138,51 @@ Após isso, será retornado o payload contendo as informações do usuário e o 
 
 ### Login
 
-Para realizar o login é enviado o `email`  e `password` da conta, a requisição é validada por `LoginRequest` para validar a entrada de dados.
+Para realizar o login é enviado o `email`  e `password` da conta.
 
-A requisição deve ser enviada para `POST /api/login` gerida pelo `AuthController` para realizar as operações necessárias.
+A requisição deve ser enviada para `POST /login` gerida pelo `AuthController` para realizar as operações necessárias.
 
 Após isso, dentro do controller a senha é verificada com o registro relacionado ao email enviado, se as informações estiverem corretas é devolvido um token de acesso no seguinte payload.
 
 ```json
 {
-    "token": "<token>"
+    "message": "Login successfully",
+    "token": "<token>",
+    "expiration": "2025-08-20 18:48:07"
 }
 ```
 
 Este token deve ser usado para as demais requisições do sistema para acessar recursos como a criação de notícias.
 
-## Fluxo das Notícias
+### Logout
 
-### Buscar Notícias
-
-Para buscar informações sobre notícias deve ser enviado uma requisição `GET /api/articles` e no cabeçalho deve estar com o token de autorização.
+Para realizar o logout basta enviar uma requisição `POST /logout` com o token no cabeçalho da requisição.
 
 Exemplo de requisição.
 
 ```bash
-GET /api/articles
+POST /logout
+```
+
+Headers obrigatórios.
+
+```http
+Authorization: Bearer <token>
+Accept: application/json
+```
+
+Após isso será retornado uma mensagem de sucesso e o token enviado será revogado.
+
+## Fluxo das Notícias
+
+### Buscar Notícias
+
+Para buscar informações sobre notícias deve ser enviado uma requisição `GET /articles` e no cabeçalho deve estar com o token de autorização.
+
+Exemplo de requisição.
+
+```bash
+GET /articles
 ```
 
 Headers obrigatórios.
@@ -173,64 +195,24 @@ Accept: application/json
 A requisição se bem sucedida irá retornar um payload como este.
 
 ```json
-{
-
-    "data": [
+[
     {
-        "id": 1,
-        "title": "Notícia do Dia",
-        "content": "Contéudo da notícia",
-        "author": "Alex Adams",
-        "created_at": "2025-08-19T17:13:14.000000Z",
-        "updated_at": "2025-08-19T17:13:14.000000Z"
+        "page": 1,
+        "total_pages": 0,
+        "total": 0,
+        "data": [<coleção de noticias>]
     }
-    ],
-    "links": {
-        "first": "http://localhost:8000/api/articles?page=1",
-        "last": "http://localhost:8000/api/articles?page=1",
-        "prev": null,
-        "next": null
-    },
-    "meta": {
-        "current_page": 1,
-        "from": 1,
-        "last_page": 1,
-        "links": [
-        {
-            "url": null,
-            "label": "&laquo; Previous",
-            "page": null,
-            "active": false
-        },
-        {
-            "url": "http://localhost:8000/api/articles?page=1",
-            "label": "1",
-            "page": 1,
-            "active": true
-        },
-        {
-            "url": null,
-            "label": "Next &raquo;",
-            "page": null,
-            "active": false
-        }
-    ],
-    "path": "http://localhost:8000/api/articles",
-    "per_page": 15,
-    "to": 1,
-    "total": 1
-    }
-}
+]
 ```
 
-### Busca Única
+<!-- ### Busca Única
 
 Para buscar uma notícia apenas, basta informar o ID na requisição.
 
 Exemplo de requisição.
 
 ```bash
-GET /api/articles/1
+GET /articles/1
 ```
 
 Headers obrigatórios.
@@ -240,7 +222,7 @@ Authorization: Bearer <token>
 Accept: application/json
 ```
 
-O payload devolvido caso exista o registro. 
+O payload devolvido caso exista o registro.
 
 ```json
 {
@@ -253,11 +235,11 @@ O payload devolvido caso exista o registro.
         "updated_at": "2025-08-19T17:13:14.000000Z"
     }
 }
-```
+``` -->
 
 ### Criar notícia
 
-Para criar uma nova notícia você deve enviar a requisição para `POST /api/articles` com o seguinte payload. 
+Para criar uma nova notícia você deve enviar a requisição para `POST /articles` com o seguinte payload.
 
 ```json
 {
@@ -272,15 +254,13 @@ Após isso será registrado uma nova notícia no banco e irá retornar o seguint
 
 ```json
 {
+    "message": "Article created successfully",
     "data": {
-        "id": 1,
-        "title": "Título da notícia",
-        "content": "Contéudo da Notícia",
-        "author": "Alex Adams",
-        "created_at": "2025-08-19T17:21:42.000000Z",
-        "updated_at": "2025-08-19T17:21:42.000000Z"
-    },
-    "message": "Notícia criada com sucesso."
+        "id": "1",
+        "title": "Noticia do dia",
+        "content": "Conteudo da noticia",
+        "created_at": "2025-08-20 17:54:27"
+    }
 }
 ```
 
@@ -288,10 +268,18 @@ Após isso será registrado uma nova notícia no banco e irá retornar o seguint
 
 Para atualizar a notícia deve ser enviado como parametro da requisição o ID da notícia que deseja alterar.
 
+Como o Code Igniter 3 não tem um suporte nativo para operações PUT, PATCH e DELETE, optei por gerenciar atrâves de um campo escondido da requisição `_method`.
+
 Exemplo de requisição.
 
 ```bash
-PUT /api/articles/1
+POST /articles/
+
+BODY {
+    "_method": "PUT"
+    "title": "Novo titulo",
+    "content": "Novo conteudo"
+}
 ```
 
 Headers obrigatórios.
@@ -299,43 +287,36 @@ Headers obrigatórios.
 ```http
 Authorization: Bearer <token>
 Accept: application/json
-```
-
-O payload para atualização deve ser.
-
-```json
-{
-    "title" : "Novo Título da notícia",
-    "content" : "Novo Contéudo da Notícia"
-}
 ```
 
 Caso aconteça tudo corretamente será devolvido o seguinte payload.
 
 ```json
 {
-    "message" : "Noticia atualizada com sucesso.",
-    "data" : {
-        "title" : {
-            "id": 1,
-            "title": "Novo Título da notícia",
-            "content": "Novo Contéudo da Notícia",
-            "author": "Alex Adams",
-            "created_at": "2025-08-19T17:13:14.000000Z",
-            "updated_at": "2025-08-19T17:41:42.000000Z"
-        }
+    "message": "Article updated successfully",
+    "data": {
+        "id": "1",
+        "user_id": "4",
+        "title": "Novo titulo",
+        "content": "Novo conteudo",
+        "created_at": "2025-08-20 17:54:27"
     }
 }
 ```
 
 ### Apagar Notícia
 
-Para apagar uma notícia você deve enviar uma requisição para `DELETE /api/articles/{id}` passando o ID da notícia.
+Para apagar uma notícia você deve enviar uma requisição para `POST /articles` seguindo o mesmo padrão do `update`.
 
 Exemplo de requisição.
 
 ```bash
-DELETE /api/articles/1
+POST /api/articles
+
+BODY {
+    "_method": "DELETE"
+    "id": "<id da noticia>"
+}
 ```
 
 Headers obrigatórios.
@@ -345,11 +326,11 @@ Authorization: Bearer <token>
 Accept: application/json
 ```
 
-Após isso a autorização será gerenciada por um Gate que irá verificar se o a requisição pode acontecer, caso sim o registro vai ser apagado do banco de dados e retornará o seguinte payload.
+Payload de retorno
 
 ```json
 {
-    "message": "Noticia apagada com sucesso."
+    "message": "Article deleted successfully"
 }
 ```
 
@@ -358,13 +339,13 @@ Após isso a autorização será gerenciada por um Gate que irá verificar se o 
 
 | Método    | Endpoint           | Autorização | Descrição               | Payload / Retorno                                |
 | --------- | ------------------ | ----------- | ----------------------- | ------------------------------------------------ |
-| POST      | /users             | Não         | Cadastra usuário        | `{name, email, password, password_confirmation}` |
-| POST      | /api/login         | Não         | Login e recebe token    | `{email, password}`                              |
-| GET       | /api/articles      | Sim         | Lista todas as notícias | Retorna array de articles                        |
-| GET       | /api/articles/{id} | Sim         | Busca uma notícia       | Retorna objeto article                           |
-| POST      | /api/articles      | Sim         | Cria nova notícia       | `{title, content}`                               |
-| PUT/PATCH | /api/articles/{id} | Sim         | Atualiza notícia        | `{title, content}`                               |
-| DELETE    | /api/articles/{id} | Sim         | Deleta notícia          | Mensagem de sucesso                              |
+| POST      | /users             | Não         | Cadastra usuário        | `{message, data -> id, name, email, created_at}` |
+| POST      | /login             | Não         | Login e recebe token    | `{message, token, expiration}`                              |
+| GET       | /articles          | Sim         | Lista todas as notícias | Retorna array com paginação das notícias                        |
+| GET       | /articles          | Sim         | Busca uma notícia       | Retorna objeto article                           |
+| POST      | /articles          | Sim         | Cria nova notícia       | `{message, data -> id, title, content, creatd_at}`                               |
+| PUT {_method:PUT}      | /articles          | Sim         | Atualiza notícia        | `{message, data -> id, user_id, title, content, creatd_at}`                               |
+| DELETE {_method:DELETE}   | /articles          | Sim         | Deleta notícia          | Mensagem de sucesso                              |
 
 ## Testes
 
