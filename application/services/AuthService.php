@@ -22,7 +22,7 @@ class AuthService
         $this->tokenService = new TokenService();
     }
 
-    public function login(UserDTO $user)
+    public function login(UserDTO $user): array
     {
         $registredUser = $this->userModel->findByEmail($user->email);
 
@@ -37,10 +37,8 @@ class AuthService
         return $token;
     }
 
-    public function logout(Token $token)
+    public function logout(Token $token): void
     {
-
         $this->tokenService->revoke($token);
-
     }
 }

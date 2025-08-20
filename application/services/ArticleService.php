@@ -11,6 +11,7 @@ use Article_model;
 use Dom\Entity;
 use DomainException;
 use InvalidArgumentException;
+use stdClass;
 
 class ArticleService
 {
@@ -21,8 +22,9 @@ class ArticleService
         $this->articleModel = new Article_model();
     }
 
-    public function findById($id){
-        if((int) $id <= 0){
+    public function findById(string $id): stdClass
+    {
+        if($id <= '0'){
             throw new InvalidArgumentException('This ID is invalid');
         }
         $article = $this->articleModel->find($id);
@@ -34,7 +36,7 @@ class ArticleService
         return $article;
     }
 
-    public function all(array $condition)
+    public function all(array $condition): array
     {
         $articles = $this->articleModel->all($condition);
 
@@ -47,7 +49,7 @@ class ArticleService
 
         return $payload;
     }
-    public function save(ArticleDTO $articleDTO)
+    public function save(ArticleDTO $articleDTO): array
     {
 
         $titleArticle = $this->articleModel->findByTitle($articleDTO->title);
@@ -72,7 +74,7 @@ class ArticleService
         return $payload;
     }
 
-    public function update(ArticleDTO $article)
+    public function update(ArticleDTO $article): stdClass
     {
         $existingArticle = $this->articleModel->find($article->id);
 
@@ -95,7 +97,7 @@ class ArticleService
         return $updatedArticle;
     }
 
-    public function delete(ArticleDTO $article)
+    public function delete(ArticleDTO $article): void
     {
         $this->articleModel->delete($article->id);
     }

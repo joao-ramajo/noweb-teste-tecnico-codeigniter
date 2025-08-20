@@ -25,9 +25,8 @@ class TokenService
         $this->tokenModel = new Token_model();
     }
 
-    public function generateToken(Email $userEmail, string $id)
+    public function generateToken(Email $userEmail, string $id): array
     {
-        // verifica se existe
         $tokenHasExists = $this->tokenModel->findByUserEmail($userEmail);
 
         if($tokenHasExists){
@@ -38,7 +37,6 @@ class TokenService
             return $payload;
         }
 
-        // se nao gera um novo
         $tokenText = bin2hex(random_bytes(64));
         $expiration = new DateTimeImmutable('+1 hour');
 
@@ -48,11 +46,8 @@ class TokenService
             'expiration' => $expiration->format('Y-m-d H:i:s')
         ];
 
-        // salva o token
-
         $this->tokenModel->create($token);
 
-        // retorna o payload
         return $token;
     }
 
@@ -70,7 +65,7 @@ class TokenService
         }
     }
 
-    public function revoke(Token $token)
+    public function revoke(Token $token): void
     {
         $this->tokenModel->deleteByToken($token);
     }
