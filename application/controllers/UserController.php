@@ -37,21 +37,24 @@ class UserController extends CI_Controller
             ], 201);
         }catch(ValidationException $e){
             return Response::json([
-                'message' => $e->getErrors()
+                'message' => $e->getErrors(),
+                'data' => null
             ], 422);
         }catch(mysqli_sql_exception $e){
                 if ($e->getCode() === 1062) {
                     return Response::json([
                         'message' => 'This email is not available',
+                        'data' => null
                     ], 409);
                 }
-
                 return Response::json([
-                    'message' => 'Database error'
+                    'message' => 'Database error',
+                    'data' => null
                 ], 500);
         }catch(Exception $e){
             return Response::json([
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
+                'data' => null
             ], 500);
         }
     }

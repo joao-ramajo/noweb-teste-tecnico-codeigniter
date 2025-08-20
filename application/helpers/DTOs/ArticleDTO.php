@@ -3,6 +3,7 @@
 namespace app\helpers\DTOs;
 
 use app\core\Request;
+use stdClass;
 
 class ArticleDTO
 {
@@ -36,6 +37,16 @@ class ArticleDTO
             $request->input('title'),
             $request->input('content'),
             $request->input('id') !== null ? (int) $request->input('id') : null
+        );
+    }
+
+    public static function fromObject(stdClass $obj): self
+    {
+        return new self(
+            $obj->user_id !== null ? $obj->user_id : null,
+            $obj->title,
+            $obj->content,
+            $obj->id !== null ? $obj->id : null
         );
     }
 

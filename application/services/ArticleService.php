@@ -20,6 +20,10 @@ class ArticleService
         $this->articleModel = new Article_model();
     }
 
+    public function findById($id){
+        return $this->articleModel->find($id);
+    }
+
     public function all(array $condition)
     {
         $articles = $this->articleModel->all($condition);
@@ -80,5 +84,10 @@ class ArticleService
         $updatedArticle = $this->articleModel->find($article->id);
 
         return $updatedArticle;
+    }
+
+    public function delete(ArticleDTO $article)
+    {
+        $this->articleModel->delete($article->id);
     }
 }

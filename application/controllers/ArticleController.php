@@ -1,6 +1,7 @@
 <?php
 
 use app\core\Request;
+use app\core\requests\articles\ArticleDeleteRequest;
 use app\core\requests\articles\ArticleStoreRequest;
 use app\core\Response;
 use app\helpers\DTOs\ArticleDTO;
@@ -70,6 +71,10 @@ class ArticleController extends CI_Controller
 
         if($request->input('_method') === 'PUT'){
             return $this->update();
+        }
+
+        if($request->input('_method') == 'DELETE'){
+            return $this->delete();
         }
 
         return $this->store();
@@ -142,6 +147,11 @@ class ArticleController extends CI_Controller
                 'message' => 'Article updated successfully',
                 'data' => $result
             ], 200);
+        }catch(ValidationException $e){
+            return Response::json([
+                'message' => $e->getErrors(),
+                'data' => null
+            ], 422);
         }catch(PermissionException $e){
             return Response::json([
                 'message' => $e->getMessage(),
@@ -161,6 +171,53 @@ class ArticleController extends CI_Controller
             return Response::json([
                 'message' => $e->getMessage(),
                 'data' => null
+            ], 500);
+        }
+    }
+
+    public function delete(){
+        try{
+            AuthMiddleware::Handle();
+
+            $request = new ArticleDeleteRequest();
+            $request->validate($this->form_validation);
+
+            $articleClass = $this->articleService->findById($request->input('id'));
+
+            if(!$articleClass){
+                throw new EntityNotFound('No articles found');
+            }
+
+            $articleDTO =  ArticleDTO::fromObject($articleClass);
+
+            $token = $request->getToken();
+
+            $user = $this->userService->findUserByToken($token);
+
+            if($articleDTO->user_id != $user->id){
+                throw new PermissionException('You are not allowed to delete this article.');
+            }
+
+            $this->articleService->delete($articleDTO);
+
+            return Response::json([
+                'message' => 'Article deleted successfully'
+            ], 200);
+        }catch(ValidationException $e){
+            return Response::json([
+                'message' => $e->getErrors(),
+            ], 422);
+        }catch(PermissionException $e){
+            return Response::json([
+                'message' => $e->getMessage(),
+            ], 403);
+        }catch(EntityNotFound $e){
+            return Response::json([
+                'message' => $e->getMessage(),
+            ], 404);
+        }catch(Exception $e){
+            return Response::json([
+                'message' => $e->getMessage()
             ], 500);
         }
     }

@@ -63,7 +63,7 @@ class AuthController extends CI_Controller
 
             return Response::json([
                 'message' => 'Logout successfully'
-            ], 204);
+            ], 200);
         }catch(InvalidTokenException $e){
             return Response::json([
                 'message' => $e->getMessage()
