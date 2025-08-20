@@ -21,7 +21,7 @@ try{
     $conn->query($articles_table);
     $conn->query($tokens_table);
 
-    echo "Tabela users criada com sucesso.";
+    // echo PHP_EOL . "Tabela users criada com sucesso.";
 
 }catch(Exception $e){
     die('Erro ao realizar as migrations: ' . $e->getMessage());

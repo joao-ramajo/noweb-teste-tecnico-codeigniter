@@ -73,6 +73,7 @@ Com isso ele irá automaticamente:
 - Instalar as dependências necessárias
 - Montar o container
 - Rodar o projeto
+- Criar tabelas no banco
 
 Após isso ele estará disponível em.
 ```http
