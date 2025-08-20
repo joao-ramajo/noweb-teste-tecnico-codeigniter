@@ -20,6 +20,7 @@
             "cp .env.example .env",
             "composer install",
             "docker compose up -d --build",
+            "composer db:reset",
             "cat welcome.md"
         ],
         "db:reset": "docker exec -it noweb-teste-tecnico-codeigniter-app-1 php application/cli/migrate.php",
