@@ -31,7 +31,7 @@ class AuthController extends CI_Controller
 
             $userDTO = UserDTO::fromLogin($request);
 
-            $payload = $this->authService->verify($userDTO);
+            $payload = $this->authService->login($userDTO);
 
             return Response::json([
                 'message' => 'Login successfully',
