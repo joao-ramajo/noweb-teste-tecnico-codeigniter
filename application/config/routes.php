@@ -58,5 +58,5 @@ $route['users']['POST'] = 'UserController/store';
 $route['login']['POST'] = 'AuthController/login';
 $route['logout']['POST'] = 'AuthController/logout';
 
-$route['articles']['POST'] = 'ArticleController/store';
+$route['articles']['POST'] = 'ArticleController/method';
 $route['articles']['GET'] = 'ArticleController/index';

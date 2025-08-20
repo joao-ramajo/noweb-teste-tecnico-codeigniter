@@ -4,7 +4,11 @@ namespace app\services;
 
 use app\helpers\DTOs\ArticleDTO;
 use app\helpers\Exceptions\EntityNotFound;
+use app\helpers\Exceptions\PermissionException;
+use app\helpers\Exceptions\UpdateFailedException;
+use app\helpers\Exceptions\ValidationException;
 use Article_model;
+use Dom\Entity;
 use DomainException;
 
 class ArticleService
@@ -53,5 +57,28 @@ class ArticleService
         ];
 
         return $payload;
+    }
+
+    public function update(ArticleDTO $article)
+    {
+        $existingArticle = $this->articleModel->find($article->id);
+
+        if(!$existingArticle){
+            throw new EntityNotFound('No articles found.');
+        }
+
+        if($article->user_id != $existingArticle->user_id){
+            throw new PermissionException('You are not allowed to update this article.');
+        }
+
+        $result = $this->articleModel->update($article->id, $article->toArray());
+
+        if(!$result){
+            throw new UpdateFailedException('An error occurred while trying to save the record');
+        }
+
+        $updatedArticle = $this->articleModel->find($article->id);
+
+        return $updatedArticle;
     }
 }
