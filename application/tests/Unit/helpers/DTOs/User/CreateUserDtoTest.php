@@ -78,3 +78,21 @@ it('can create a user DTO from request', function($request) {
         'password_confirmation' => 'Aa123123'
     ]),
 ]);
+
+
+it('can create a UserDTO from stdClass object', function() {
+    $userObject = new stdClass();
+    $userObject->name = 'John Doe';
+    $userObject->email = 'john@example.com';
+    $userObject->password = 'Aa123123';
+
+    $dto = UserDTO::fromObject($userObject);
+
+    expect($dto)
+        ->toBeInstanceOf(UserDTO::class)
+        ->and($dto->name)->toBe('John Doe')
+        ->and($dto->email)->toBeInstanceOf(Email::class)
+        ->and((string) $dto->email)->toBe('john@example.com')
+        ->and($dto->password)->toBeInstanceOf(Password::class)
+        ->and((string) $dto->password)->toBe('Aa123123');
+});
