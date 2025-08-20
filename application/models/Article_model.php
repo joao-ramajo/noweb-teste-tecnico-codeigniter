@@ -1,5 +1,7 @@
 <?php
 
+use app\helpers\DTOs\ArticleDTO;
+
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Article_model extends CI_Model
@@ -22,9 +24,15 @@ class Article_model extends CI_Model
         return $this->db->get_where(self::TABLE, ['id' => $id])->row();
     }
 
-    public function create($data)
+    public function create(ArticleDTO $articleDTO)
     {
-        return $this->db->insert(self::TABLE, $data);
+        $data = $articleDTO->toArray();
+
+        $this->db->insert(self::TABLE, $data);
+
+        $id = $this->db->insert_id(); // pega o ID gerado
+
+        return $this->find($id); // retorna o registro completo
     }
 
     public function update($id, $data)

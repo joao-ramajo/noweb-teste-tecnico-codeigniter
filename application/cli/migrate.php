@@ -11,6 +11,12 @@ try{
     $articles_table = file_get_contents(dirname(__DIR__, 1) . '/database/tables/articles.sql');
     $tokens_table = file_get_contents(dirname(__DIR__, 1) . '/database/tables/access_tokens.sql');
 
+    $conn->query('SET FOREIGN_KEY_CHECKS = 0;');
+    $conn->query('DROP TABLE IF EXISTS tokens_access');
+    $conn->query('DROP TABLE IF EXISTS articles');
+    $conn->query('DROP TABLE IF EXISTS users');
+    $conn->query('SET FOREIGN_KEY_CHECKS = 1;');
+
     $conn->query($users_table);
     $conn->query($articles_table);
     $conn->query($tokens_table);

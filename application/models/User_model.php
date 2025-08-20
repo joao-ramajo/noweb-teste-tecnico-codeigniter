@@ -2,6 +2,7 @@
 
 use app\helpers\DTOs\UserDTO;
 use app\helpers\ValuesObjects\Email;
+use app\helpers\ValuesObjects\Token;
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -32,6 +33,20 @@ class User_model extends CI_Model
         }
 
         return $user;
+    }
+
+    public function findByToken(Token $token)
+    {
+        // echo "BUSCANOD USUARIO POR TOKEN: $token";
+        $this->db->select('users.id, users.name, users.email');
+        $this->db->from('users');
+        $this->db->join('access_tokens', 'access_tokens.user_id = users.id');
+        $this->db->where('access_tokens.token = ', $token);
+
+        $query = $this->db->get();
+        $result = $query->row();
+
+        return $result;
     }
 
     public function create($data)

@@ -3,6 +3,8 @@
 namespace app\services;
 
 use app\helpers\DTOs\UserDTO;
+use app\helpers\Exceptions\EntityNotFound;
+use app\helpers\ValuesObjects\Token;
 use Exception;
 use InvalidArgumentException;
 use stdClass;
@@ -34,5 +36,16 @@ class UserService
         unset($created->password);
 
         return $created;
+    }
+
+    public function findUserByTokn(Token $token)
+    {
+        $user = $this->userModel->findByToken($token);
+
+        if(!$user){
+            throw new EntityNotFound('No records found');
+        }
+
+        return $user;
     }
 }
