@@ -243,7 +243,7 @@ Para criar uma nova notícia você deve enviar a requisição para `POST /articl
 ```json
 {
     "title" : "Título da notícia",
-    "content" : "Contéudo da Notícia"
+    "content" : "Conteúdo da Notícia"
 }
 ```
 
@@ -265,9 +265,9 @@ Após isso será registrado uma nova notícia no banco e irá retornar o seguint
 
 ### Atualizar Notícias
 
-Para atualizar a notícia deve ser enviado como parametro da requisição o ID da notícia que deseja alterar.
+Para atualizar a notícia deve ser enviado como parâmetro da requisição o ID da notícia que deseja alterar.
 
-Como o Code Igniter 3 não tem um suporte nativo para operações PUT, PATCH e DELETE, optei por gerenciar atrâves de um campo escondido da requisição `_method`.
+Como o Code Igniter 3 não tem um suporte nativo para operações PUT, PATCH e DELETE, optei por gerenciar através de um campo escondido da requisição `_method`.
 
 Exemplo de requisição.
 
@@ -346,30 +346,8 @@ Payload de retorno
 | PUT {_method:PUT}      | /articles          | Sim         | Atualiza notícia        | `{message, data -> id, user_id, title, content, creatd_at}`                               |
 | DELETE {_method:DELETE}   | /articles          | Sim         | Deleta notícia          | Mensagem de sucesso                              |
 
-## Testes
-
-Os testes foram feitos de maneira a testar o fluxo completo da aplicação, por se tratar de lógicas simples e sem grande necessidade de diversas regras de negocio, optei por desenvolver testes de integração.
-
-Para os requisitos do projeto adicionar camadas de complexidade maiores não faria sentido, assim causando um forte acoplamento com o Eloquent que já é testado pelo próprio Laravel, sendo assim optei por testes de integração para garantir que o fluxo está funcionando faz mais sentido do que diversos testes de unidade.
-
-### Como rodar os testes
-
-```
-php artisan test
-```
-
-
-### O que será testado
-
-- Cadastro de usuário
-- Login e geração de token
-- Criação, leitura, atualização e exclusão de notícias
-- Restrições de acesso via autenticação
-
 ## Autenticação
 
-A autenticação é feita pelo middleware disponibilizado pela biblioteca `Sanctum`utilizando tokens para verificação nas requisições.
+A autenticação é feita atrâves de tokens personalizados, ao fazer login será gerado um token para o usuário com expiração de 1 hora.
 
-## Autorização
-
-A autorização para criação, edição e apagar notícias é feita atrâves de Policies configuradas em `ArticlePolicy.php`.
+Sempre que o usuário fizer login e houver um token válido registrado ele será retornado, caso não existe ele irá gerar um novo.
