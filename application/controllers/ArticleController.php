@@ -33,7 +33,7 @@ class ArticleController extends CI_Controller
         $this->userService = new UserService();
     }
 
-    public function index()
+    public function index(): Response
     {
         try{
             $request = new Request();
@@ -48,7 +48,7 @@ class ArticleController extends CI_Controller
                 ]);
 
             }
-            die();
+
             $page = $request->param('page') ?? 1;
             $perPage = 5;
             $offset = ($page - 1) * $perPage;
@@ -82,7 +82,7 @@ class ArticleController extends CI_Controller
         }
     }
 
-    public function method()
+    public function method(): Response
     {
         $request = new Request();
 
@@ -97,18 +97,18 @@ class ArticleController extends CI_Controller
         return $this->store();
     }
 
-    public function store()
+    public function store(): Response
     {
         try{
             AuthMiddleware::handle();
 
             $request = new ArticleStoreRequest();
             $request->validate($this->form_validation);
-            
+
             $token = $request->getToken();
-            
+
             $articleDTO = ArticleDTO::fromRequest($request);
-            
+
             $user = $this->userService->findUserByToken($token);
 
 
@@ -143,7 +143,7 @@ class ArticleController extends CI_Controller
         }
     }
 
-    public function update()
+    public function update(): Response
     {
         try{
             AuthMiddleware::handle();
@@ -193,7 +193,8 @@ class ArticleController extends CI_Controller
         }
     }
 
-    public function delete(){
+    public function delete(): Response
+    {
         try{
             AuthMiddleware::Handle();
 

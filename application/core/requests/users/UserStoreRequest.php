@@ -8,7 +8,7 @@ use app\helpers\Exceptions\ValidationException;
 
 class UserStoreRequest extends Request
 {
-    public function validate($form)
+    public function validate($form): void
     {
         $form->set_rules('email', 'E-mail', 'required|max_length[50]');
         $form->set_rules('name', 'Name', 'required|max_length[50]');

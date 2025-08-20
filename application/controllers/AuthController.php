@@ -26,7 +26,7 @@ class AuthController extends CI_Controller
         $this->authService = new AuthService();
     }
 
-    public function login()
+    public function login(): Response
     {
         try{
             $request = new LoginRequest();
@@ -52,7 +52,7 @@ class AuthController extends CI_Controller
         }
     }
 
-    public function logout()
+    public function logout(): Response
     {
         try{
             AuthMiddleware::handle();

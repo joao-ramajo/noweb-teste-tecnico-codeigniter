@@ -7,7 +7,7 @@ use app\helpers\Exceptions\ValidationException;
 
 class LoginRequest extends Request
 {
-    public function validate($form)
+    public function validate($form): void
     {
         $form->set_rules('email', 'E-mail', 'required|max_length[50]');
         $form->set_rules('password', 'Password', 'required|min_length[6]|max_length[12]');

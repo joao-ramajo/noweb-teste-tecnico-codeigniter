@@ -49,12 +49,12 @@ class Request
         return htmlspecialchars($this->params[$key], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
     }
 
-    public function method()
+    public function method(): ?string
     {
         return $this->method;
     }
 
-    public function getToken()
+    public function getToken(): string
     {
         $headers = getallheaders();
 

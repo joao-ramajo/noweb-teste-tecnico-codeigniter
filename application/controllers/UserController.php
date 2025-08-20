@@ -21,7 +21,7 @@ class UserController extends CI_Controller
         $this->userService = new UserService();
     }
 
-    public function store()
+    public function store(): Response
     {
         try{
             $request = new UserStoreRequest();

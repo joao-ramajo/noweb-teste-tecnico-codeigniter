@@ -19,7 +19,7 @@ class User_model extends CI_Model
         return $this->db->get('users')->result();
     }
 
-    public function find($id)
+    public function find(string $id)
     {
         return $this->db->get_where('users', ['id' => $id])->row();
     }
@@ -49,17 +49,17 @@ class User_model extends CI_Model
         return $result;
     }
 
-    public function create($data)
+    public function create(array $data)
     {
         return $this->db->insert('users', $data);
     }
 
-    public function updateUser($id, $data)
+    public function updateUser(string $id, array $data)
     {
         return $this->db->where('id', $id)->update('users', $data);
     }
 
-    public function delete($id)
+    public function delete(string $id)
     {
         return $this->db->delete('users', ['id' => $id]);
     }

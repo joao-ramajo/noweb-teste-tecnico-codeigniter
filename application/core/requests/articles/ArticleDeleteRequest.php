@@ -7,7 +7,7 @@ use app\helpers\Exceptions\ValidationException;
 
 class ArticleDeleteRequest extends Request
 {
-    public function validate($form)
+    public function validate($form): void
     {
         $form->set_rules('id', 'Article ID', 'required|max_length[50]');
 

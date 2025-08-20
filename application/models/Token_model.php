@@ -1,5 +1,6 @@
 <?php
 
+use app\helpers\ValuesObjects\Email;
 use app\helpers\ValuesObjects\Token;
 
 defined('BASEPATH') OR exit('No direct script access allowed');
@@ -24,7 +25,7 @@ class Token_model extends CI_Model
         return $this->db->get_where(self::TABLE, ['id' => $id])->row();
     }
 
-    public function findByUserEmail($email)
+    public function findByUserEmail(Email $email)
     {
         $this->db->select('access_tokens.user_id, access_tokens.token, access_tokens.expiration');
         $this->db->from('users');
@@ -38,7 +39,7 @@ class Token_model extends CI_Model
         return $result;
     }
 
-    public function findByToken($token){
+    public function findByToken(Token $token){
         $this->db->select('token');
         $this->db->from('access_tokens');
         $this->db->where('token', $token);
@@ -50,17 +51,17 @@ class Token_model extends CI_Model
         return $result;
     }
 
-    public function create($data)
+    public function create(array $data)
     {
         return $this->db->insert(self::TABLE, $data);
     }
 
-    public function update($id, $data)
+    public function update(string $id, array $data)
     {
         return $this->db->where('id', $id)->update(self::TABLE, $data);
     }
 
-    public function delete($id)
+    public function delete(string $id)
     {
         return $this->db->delete(self::TABLE, ['id' => $id]);
     }

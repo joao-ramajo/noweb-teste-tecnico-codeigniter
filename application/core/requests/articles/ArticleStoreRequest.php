@@ -7,7 +7,7 @@ use app\helpers\Exceptions\ValidationException;
 
 class ArticleStoreRequest extends Request
 {
-    public function validate($form)
+    public function validate($form): void
     {
         $form->set_rules('title', 'Title', 'required|max_length[50]');
         $form->set_rules('content', 'Content', 'required');
