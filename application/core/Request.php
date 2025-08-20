@@ -31,10 +31,15 @@ class Request
         $this->params = $params;
     }
 
-    public function input($key)
+    public function input(?string $key): ?string
     {
+        if (!isset($this->data[$key])) {
+            return null;
+        }
+
         return htmlspecialchars($this->data[$key], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
     }
+
 
     public function method()
     {

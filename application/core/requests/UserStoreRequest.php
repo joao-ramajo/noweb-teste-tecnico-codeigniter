@@ -4,7 +4,6 @@ namespace app\core\requests;
 
 use app\core\Request;
 use app\helpers\Exceptions\ValidationException;
-use InvalidArgumentException;
 
 class UserStoreRequest extends Request
 {
