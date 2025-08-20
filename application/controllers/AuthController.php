@@ -18,7 +18,8 @@ class AuthController extends CI_Controller
         $this->load->library('form_validation');
         $this->load->model('User_model');
         $this->load->model('Article_model');
-        
+        $this->load->model('Token_model');
+
         $this->authService = new AuthService();
     }
 
@@ -30,8 +31,13 @@ class AuthController extends CI_Controller
 
             $userDTO = UserDTO::fromLogin($request);
 
-            $this->authService->verify($userDTO);
+            $payload = $this->authService->verify($userDTO);
 
+            return Response::json([
+                'message' => 'Login successfully',
+                'token' => $payload['token'],
+                'expiration' => $payload['expiration']
+            ]);
         }catch(ValidationException $e){
             return Response::json([
                 'message' => $e->getErrors()

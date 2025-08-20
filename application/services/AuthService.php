@@ -6,17 +6,20 @@ use app\helpers\DTOs\UserDTO;
 use Article_model;
 use DateTimeImmutable;
 use InvalidArgumentException;
+use Token_model;
 use User_model;
 
 class AuthService
 {
     private User_model $userModel;
     private Article_model $articleModel;
+    private Token_model $tokenModel;
 
     public function __construct()
     {
         $this->userModel = new User_model();
         $this->articleModel = new Article_model();
+        $this->tokenModel = new Token_model();
     }
     public function verify(UserDTO $user)
     {
@@ -34,15 +37,17 @@ class AuthService
             throw new InvalidArgumentException('Email or password invalid');
         }
 
-        $token = bin2hex(random_bytes(64));
+        $tokenText = bin2hex(random_bytes(64));
         $expiration = new DateTimeImmutable('+1 hour');
 
-        $payload = [
-            'token' => $token,
-            'expiration' => $expiration
+        $token = [
+            'user_id' => $registredUser->id,
+            'token' => $tokenText,
+            'expiration' => $expiration->format('Y-m-d H:i:s')
         ];
 
-        print_r($payload);
-        die();
+        $this->tokenModel->create($token);
+
+        return $token;
     }
 }
